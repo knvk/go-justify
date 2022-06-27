@@ -1,18 +1,18 @@
 package main
 
 import (
-	"strconv"
-	"fmt"
 	"bufio"
-	"os"
+	"fmt"
 	"io"
+	"os"
+	"strconv"
 )
 
 var (
-	numWords int
+	numWords   int
 	maxLineLen int = 80
-	word = []rune{}
-	line = []rune{}
+	word           = []rune{}
+	line           = []rune{}
 )
 
 func readWord(r *bufio.Reader) (int, error) {
@@ -25,12 +25,12 @@ func readWord(r *bufio.Reader) (int, error) {
 			//fmt.Println(word)
 		} else {
 			return l, err
-			}
+		}
 	}
 }
 
-func addWord(){
-	if numWords>0 {
+func addWord() {
+	if numWords > 0 {
 		line = append(line, ' ')
 	}
 	line = append(line, word...)
@@ -53,24 +53,23 @@ func readChar(r *bufio.Reader) (rune, error) {
 
 func writeLine() {
 	extraSpaces := maxLineLen - len([]rune(line))
-	for  _, ch := range line {
+	for _, ch := range line {
 		if ch != ' ' {
 			fmt.Printf(string(ch))
 		} else {
-			insertSpaces := extraSpaces/(numWords - 1)
+			insertSpaces := extraSpaces / (numWords - 1)
 			if extraSpaces > 0 && insertSpaces == 0 {
 				insertSpaces++
 			}
-			for j := 0; j <= insertSpaces ; j++ {
+			for j := 0; j <= insertSpaces; j++ {
 				fmt.Printf(string(' '))
 			}
-		extraSpaces -= insertSpaces
-		numWords--
+			extraSpaces -= insertSpaces
+			numWords--
 		}
 	}
 	fmt.Printf("\n")
 }
-
 
 func main() {
 	r := bufio.NewReader(os.Stdin)
@@ -87,15 +86,15 @@ func main() {
 		word = []rune{}
 		_, err := readWord(r)
 		if err == io.EOF {
-			fmt.Println(string(line),string(' '))
+			fmt.Println(string(line), string(' '))
 			break
 		}
 		if len([]rune(line))+len([]rune(word))+1 > maxLineLen {
 			writeLine()
 			// reset line
-			line =[]rune{}
+			line = []rune{}
 			numWords = 0
 		}
 		addWord()
-		}
 	}
+}
